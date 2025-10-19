@@ -1,0 +1,104 @@
+name: Update dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    paths:
+      - "requirements.txt"
+      - "**.yml"
+
+jobs:
+  deps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install pip
+        run: pip install --upgrade pip
+
+      - name: Update requirements.txt
+        id: update
+        run: |
+          python <<EOF
+          import json
+          import subprocess
+          from pathlib import Path
+
+          reqs = Path("requirements.txt")
+
+          result = subprocess.run(
+              ["pip", "list", "--outdated", "--format", "json"],
+              capture_output=True, text=True, check=True
+          )
+          outdated = {p["name"].lower(): p["latest_version"] for p in json.loads(result.stdout)}
+
+          changed = 0
+          lines = reqs.read_text().splitlines()
+          new_lines = []
+          for line in lines:
+              if not line.strip() or line.strip().startswith("#"):
+                  new_lines.append(line)
+                  continue
+
+              pkg = line.strip().split("==")[0].lower()
+              if pkg in outdated:
+                  latest = outdated[pkg]
+                  new_line = f"{pkg}=={latest}"
+                  if new_line != line:
+                      new_lines.append(new_line)
+                      changed += 1
+                  else:
+                      new_lines.append(line)
+              else:
+                  new_lines.append(line)
+
+          if changed:
+              reqs.write_text("\n".join(new_lines) + "\n")
+
+          title = "Update dependencies" if not changed else f"Update dependencies [{changed} packages]"
+          with open("/tmp/title.txt", "w") as f:
+              f.write(title)
+          EOF
+
+          echo "title=$(cat /tmp/title.txt)" >> $GITHUB_OUTPUT
+          echo "date=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          git diff -U0 requirements.txt | grep '^[+-][^+-]' >> $GITHUB_OUTPUT || true
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Configure Git for push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_PAT }}
+          commit-message: ${{ steps.update.outputs.title }}
+          title: ${{ steps.update.outputs.title }}
+          body: |
+            Updated dependencies:
+
+            ```diff
+            ${{ steps.update.outputs.diff }}
+            ```
+          branch: deps/update-${{ steps.update.outputs.date }}
+          delete-branch: true
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
