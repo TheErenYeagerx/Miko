@@ -1,3 +1,10 @@
+<p align="center">
+  <img src="https://i.ibb.co/392BpmQ0/tmpas8jv23x.jpg" width="400" alt="Miko Safe Admin Bot">
+</p>
+
+
+
+
 # Miko Safe Admin Telethon Bot
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat)](#)
@@ -6,9 +13,6 @@
 [![Telethon](https://img.shields.io/badge/telethon-%3E%3D1.0-orange.svg?style=flat)](https://docs.telethon.dev/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](#)
 
-<p align="center">
-  <img src="https://i.ibb.co/392BpmQ0/tmpas8jv23x.jpg" width="400" alt="Miko Safe Admin Bot">
-</p>
 
 ---
 
