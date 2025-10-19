@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](#)
 
 <p align="center">
-  <img src="https://i.ibb.co/ns3kDhzp/tmpojwn0bx3.jpg" width="400" alt="miko">
+  <img src="https://i.ibb.co/ns3kDhzp/tmpojwn0bx3.jpg" width="400" alt="Miko Safe Admin Bot">
 </p>
 
 ---
