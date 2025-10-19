@@ -1,4 +1,4 @@
-# Safe Admin Telethon Bot
+# Miko Safe Admin Telethon Bot
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat)](#)
 [![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg?style=flat)](#)
@@ -7,13 +7,13 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](#)
 
 <p align="center">
-  <img src="https://i.ibb.co/6c5yPtm6/tmpe0dxt3zo.jpg" width="400" alt="Safe">
+  <img src="https://i.ibb.co/6c5yPtm6/tmpe0dxt3zo.jpg" width="400" alt="Miko">
 </p>
 
 ---
 
 ## Overview
-**Safe Admin Telethon Bot** is a safe and ethical administrative helper bot built with Telethon. It allows account management, username resolution, temporary sudo approvals, and simulation logs — all without performing any abusive or bulk actions.  
+**Miko Safe Admin Telethon Bot** is a safe and ethical administrative helper bot built with Telethon. It allows account management, username resolution, temporary sudo approvals, and simulation logs — all without performing any abusive or bulk actions.  
 
 This bot is designed for administrators to manage their own accounts or groups safely and responsibly.
 
